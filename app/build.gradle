@@ -1,0 +1,68 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "app.cryptotweets"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Retrofit support for error: 'Invoke-customs are only supported starting with Android O (--min-api 26)'
+    // See: https://stackoverflow.com/questions/49891730/invoke-customs-are-only-supported-starting-with-android-0-min-api-26/50198499#50198499
+    compileOptions { targetCompatibility JavaVersion.VERSION_1_8 }
+
+    // ViewModel support init with 'by' delegate error: "Cannot inline bytecode built with JVM
+    // target 1.8 into bytecode that is being built with JVM target 1.6. Please specify proper
+    // '-jvm-target' option"
+    // See: https://stackoverflow.com/a/57969464/2253682
+    kotlinOptions.jvmTarget = '1.8'
+
+    buildFeatures.viewBinding = true
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support"
+    implementation "androidx.core:core-ktx:$core_ktx"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_livedata_ktx"
+    implementation "androidx.room:room-runtime:$room_alpha_version"
+    implementation "androidx.room:room-ktx:$room_alpha_version"
+    kapt "androidx.room:room-compiler:$room_alpha_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version_alpha"
+    implementation "io.coil-kt:coil:$coil_version"
+
+    testImplementation "junit:junit:$junit"
+    testImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_junit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+}
